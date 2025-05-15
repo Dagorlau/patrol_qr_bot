@@ -1,7 +1,6 @@
 from telegram import Update, KeyboardButton, ReplyKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
 from datetime import datetime
-import os
 
 ADMINS = [1008592626]
 
@@ -36,9 +35,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def location_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     location = update.message.location
-    if not location:
-        await update.message.reply_text("Ошибка: Геолокация не получена. Пожалуйста, попробуйте ещё раз.")
-        return
     if user.id in user_last_point:
         point_code, point_name = user_last_point.pop(user.id)
         time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -53,8 +49,7 @@ async def location_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Сначала просканируйте QR-код с командой /start.")
 
 if name == "__main__":
-    TOKEN = os.getenv("BOT_TOKEN")  # лучше токен брать из переменной окружения
-    app = ApplicationBuilder().token(TOKEN).build()
+    app = ApplicationBuilder().token("ВАШ_ТОКЕН_ЗДЕСЬ").build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.LOCATION, location_handler))
     app.run_polling()
