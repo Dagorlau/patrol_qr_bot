@@ -2,7 +2,7 @@ from telegram import Update, KeyboardButton, ReplyKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
 from datetime import datetime
 
-ADMINS = [1008592626]
+ADMINS = [1008592626,1710339009]
 
 checkpoints = {
     'door_001': {'name': 'Гараж'},
