@@ -1,8 +1,9 @@
 from telegram import Update, KeyboardButton, ReplyKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
 from datetime import datetime
+import pytz  # Добавлен для часового пояса
 
-ADMINS = [1008592626,1710339009,670020154]
+ADMINS = [1008592626, 1710339009, 670020154]
 
 checkpoints = {
     'door_001': {'name': 'Гараж'},
@@ -37,11 +38,13 @@ async def location_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     location = update.message.location
     if user.id in user_last_point:
         point_code, point_name = user_last_point.pop(user.id)
+
+        # Устанавливаем саратовский часовой пояс
         timezone = pytz.timezone("Europe/Saratov")
-        # Саратовский часовой пояс 
         local_time = datetime.now(timezone).strftime("%Y-%m-%d %H:%M:%S")
+
         message = (
-            f"Охранник {user.full_name} прошёл точку: {point_name} ({point_code}) в {time}\n"
+            f"Охранник {user.full_name} прошёл точку: {point_name} ({point_code}) в {local_time}\n"
             f"Геолокация: https://www.google.com/maps?q={location.latitude},{location.longitude}"
         )
         for admin in ADMINS:
@@ -50,8 +53,9 @@ async def location_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await update.message.reply_text("Сначала просканируйте QR-код с командой /start.")
 
-if __name__ == "__main__":
-    app = ApplicationBuilder().token("8138530190:AAEUF6qsQO6P_j1htHRUQ5JXWFIW9G9d3Ws").build()
+if name == "__main__":
+    app = ApplicationBuilder().token("8138530190:AAEUF6qsQO6P_j1htHRUQ5JXWFIW9G9d3Ws
+").build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.LOCATION, location_handler))
     app.run_polling()
