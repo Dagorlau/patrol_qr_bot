@@ -54,8 +54,7 @@ async def location_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Сначала просканируйте QR-код с командой /start.")
 
 if __name__ == "__main__":
-    app = ApplicationBuilder().token("8138530190:AAEUF6qsQO6P_j1htHRUQ5JXWFIW9G9d3Ws
-").build()
+    app = ApplicationBuilder().token("8138530190:AAEUF6qsQO6P_j1htHRUQ5JXWFIW9G9d3Ws").build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.LOCATION, location_handler))
     app.run_polling()
